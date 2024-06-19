@@ -1,46 +1,39 @@
-# Spring Cloud Config Demo
+# Spring Cloud Config Demo Using Directory
 
-This project demonstrates how to use Spring Cloud Config Server to manage configurations for a Spring Boot application.
+This project demonstrates how to use Spring Cloud Config Server to manage configurations for a Spring Boot application, loading configurations from a directory instead of Git.
 
 ## Setup Instructions
 
-### Step 1: Config Server Setup
+### Step 1: Running the Config Server
 
-1. **Copy Configuration Files**:
+1. **Configuration**:
 
-   - Copy the `spring-config` directory and paste it to `C:\spring-config`.
-
-2. **Initialize Git Repository**:
-   - Navigate to `C:\spring-config` and run the following commands to initialize a git repository and commit the configuration files:
-     ```sh
-     cd C:\spring-config
-     git init
-     git add .
-     git commit -m "Initial commit of configuration files"
+   - Ensure your `application.properties` for the Config Server is correctly configured to load configurations from the user directory:
+     ```properties
+     spring.application.name=server
+     server.port=8888
+     spring.profiles.active=native
+     spring.cloud.config.server.native.search-locations=${user.dir}/spring-config
      ```
 
-### Step 2: Running the Config Server
-
-1. **Start the Config Server**:
+2. **Start the Config Server**:
 
    - Run the Spring Boot application for the Config Server (assumed to be on port 8888 by default).
 
-2. **Verify the Config Server**:
-   - Visit `http://localhost:8888/test-service/default` to ensure that the Config Server is loading the configuration correctly.
+3. **Verify the Config Server**:
+   - Visit `http://localhost:8888/test-service/default` to ensure that the Config Server is loading the configuration correctly from the user directory.
 
-### Step 3: Client Setup
+### Step 2: Client Setup
 
 1. **Update `pom.xml`**:
 
    - Ensure your `pom.xml` includes the necessary dependencies for Spring Cloud Config and Actuator:
-
      ```xml
      <dependencies>
      	<dependency>
      		<groupId>org.springframework.boot</groupId>
      		<artifactId>spring-boot-starter-web</artifactId>
      	</dependency>
-
      	<dependency>
      		<groupId>org.springframework.boot</groupId>
      		<artifactId>spring-boot-starter-test</artifactId>
@@ -72,7 +65,7 @@ This project demonstrates how to use Spring Cloud Config Server to manage config
 3. **Run the Client Application**:
    - Start the Spring Boot client application (assumed to be on port 8080 by default).
 
-### Step 4: Verify the Client Application
+### Step 3: Verify the Client Application
 
 1. **Access the Client Endpoint**:
 
@@ -85,7 +78,7 @@ This project demonstrates how to use Spring Cloud Config Server to manage config
 
 ## Summary
 
-- **Config Server**: Hosts configuration properties and serves them to client applications.
+- **Config Server**: Hosts configuration properties and serves them to client applications. Configuration files are loaded from the user directory specified by `${user.dir}/spring-config`.
 - **Client Application**: Fetches configuration properties from the Config Server at startup.
 
 ### Useful Links
